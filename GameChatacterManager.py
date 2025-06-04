@@ -16,7 +16,11 @@ CREATE TABLE IF NOT EXISTS characters (
 db.commit()
 
 def main():
-    pass
+    choice = int(input("""
+1. Create New Character
+"""))
+    if choice == 1:
+        createNewCharacter(nm, cl)
 
 def createNewCharacter(nm, cl):
     pass
