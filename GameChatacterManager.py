@@ -1,6 +1,6 @@
 import sqlite3
 
-db = sqlite3.connect('example.db')
+db = sqlite3.connect('characters.db')
 
 cur = db.cursor()
 
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS characters (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT NOT NULL,
     class TEXT NOT NULL,
-    level INTEGER DEFAULT '0'
+    level INTEGER DEFAULT '0',
     health INTEGER DEFUALT '100'
 );
 """)
@@ -25,7 +25,7 @@ def getString(message):
 def getInteger(message):
     number = None
     while number == None:
-        number = int(input(f"{message}"))
+        number = int(input(f"{message}\n"))
     return number
 
 def main():
@@ -41,11 +41,11 @@ def main():
     elif choice == 2:
         veiwCharacters()
     elif choice == 3:
-        id = getInteger("What is your characters id")
-        updateCharacter(id)
+        CharacterId = getInteger("What is your characters id")
+        updateCharacter(CharacterId)
     elif choice == 4:
-        id = getInteger("What is your characters id")
-        deleteCharacter(id)
+        CharacterId = getInteger("What is your characters id")
+        deleteCharacter(CharacterId)
     elif choice == 5:
         exit()
     else:
@@ -71,13 +71,15 @@ def veiwCharacters():
     data = cur.fetchall()
     for line in data:
         print(line)
+    main()
 
 
-def updateCharacter(id):
+def updateCharacter(CharacterId):
     choice = int(input("""
 1. Edit Name
 2. Edit Class
 3. Edit Level
+4. Edit Health
 """))
     if choice == 1:
         newCharacterName = getString("What do you want to change the characters name to")
@@ -85,10 +87,10 @@ def updateCharacter(id):
                     UPDATE characters
                     SET name = ?
                     WHERE id = ?
-                    """, (newCharacterName, id))
+                    """, (newCharacterName, CharacterId))
         db.commit()
-        new_id = cur.lastrowid
-        print(f"Updated Characters Name with a id of {new_id}")
+        IdUsed = cur.lastrowid
+        print(f"Updated Characters Name with a id of {IdUsed}")
 
     elif choice == 2:
         newClassName = getString("What do you want to change the characters class to")
@@ -96,10 +98,10 @@ def updateCharacter(id):
                     UPDATE characters
                     SET class = ?
                     WHERE id = ?
-                    """, (newClassName, id))
+                    """, (newClassName, CharacterId))
         db.commit()
-        new_id = cur.lastrowid
-        print(f"Updated Characters Class with a id of {new_id}")
+        IdUsed = cur.lastrowid
+        print(f"Updated Characters Class with a id of {IdUsed}")
 
     elif choice == 3:
         newLevel = getInteger("What do you want to change the characters level to")
@@ -107,21 +109,35 @@ def updateCharacter(id):
                     UPDATE characters
                     SET level = ?
                     WHERE id = ?
-                    """, (newLevel, id))
+                    """, (newLevel, CharacterId))
         db.commit()
-        new_id = cur.lastrowid
-        print(f"Updated Characters Level with a id of {new_id}")
+        IdUsed = cur.lastrowid
+        print(f"Updated Characters Level with a id of {IdUsed}")
+
+    elif choice == 4:
+        newHealth = getInteger("What do you want to change the characters health to")
+        cur.execute("""
+                    UPDATE characters
+                    SET health = ?
+                    WHERE id = ?
+                    """, (newHealth, CharacterId))
+        db.commit()
+        IdUsed = cur.lastrowid
+        print(f"Updated Characters Health with a id of {IdUsed}")
     main()
 
 
-def deleteCharacter(id):
+def deleteCharacter(CharacterId):
     cur.execute("""
-                DELETE FROM example
+                DELETE FROM characters
                 WHERE id = ?
-                """, (id))
+                """, (CharacterId))
     db.commit()
     new_id = cur.lastrowid
-    print(f"Deleted Character with a id of {new_id}")
+    print(f"Deleted Character with a id of {CharacterId}")
+    main()
 
 def exit():
     print("Just Kill It")
+
+main()
