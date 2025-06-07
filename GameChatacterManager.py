@@ -32,21 +32,24 @@ def main():
     choice = int(input("""
 1. Create New Character
 2. View All Characters
-3. Update Character
-4. Delete Character
-5. Exit
+3. Search For Character
+4. Update Character
+5. Delete Character
+6. Exit
 """))
     if choice == 1:
         createNewCharacter()
     elif choice == 2:
         veiwCharacters()
     elif choice == 3:
-        CharacterId = getInteger("What is your characters id")
-        updateCharacter(CharacterId)
+        searchCharacter()
     elif choice == 4:
         CharacterId = getInteger("What is your characters id")
-        deleteCharacter(CharacterId)
+        updateCharacter(CharacterId)
     elif choice == 5:
+        CharacterId = getInteger("What is your characters id")
+        deleteCharacter(CharacterId)
+    elif choice == 6:
         exit()
     else:
         print("Invalid Choice")
@@ -73,6 +76,42 @@ def veiwCharacters():
         print(line)
     main()
 
+
+def searchCharacter():
+    choice = int(input("""
+1. Search For Character by Name
+2. Search For Character by Class
+3. Search For Character by Level
+4. Search For Character by Health
+"""))
+    if choice == 1:
+        characterName = getString("What is the name of the characters you want to search for")
+        cur.execute("SELECT * FROM characters WHERE name = ? ", [characterName])
+        characters = cur.fetchall()
+        for character in characters:
+            print(character)
+
+    elif choice == 2:
+        characterClass = getString("What is the class of the characters you want to search for")
+        cur.execute("SELECT * FROM characters WHERE class = ? ", [characterClass])
+        characters = cur.fetchall()
+        for character in characters:
+            print(character)
+
+    elif choice == 3:
+        characterLevel = getString("What is the level of the characters you want to search for")
+        cur.execute("SELECT * FROM characters WHERE class = ? ", [characterLevel])
+        characters = cur.fetchall()
+        for character in characters:
+            print(character)
+
+    elif choice == 4:
+        characterHealth = getString("What is the health of the characters you want to search for")
+        cur.execute("SELECT * FROM characters WHERE health = ? ", [characterHealth])
+        characters = cur.fetchall()
+        for character in characters:
+            print(character)
+    main()
 
 def updateCharacter(CharacterId):
     choice = int(input("""
