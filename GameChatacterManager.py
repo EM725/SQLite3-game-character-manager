@@ -16,11 +16,13 @@ CREATE TABLE IF NOT EXISTS characters (
 
 db.commit()
 
+
 def getString(message):
     string = None
-    while string == None:
+    while string == None or string == '':
         string = str(input(f"{message}\n"))
     return string
+
 
 def getInteger(message):
     number = None
@@ -28,6 +30,7 @@ def getInteger(message):
         number = int(input(f"{message}\n"))
     return number
 
+#the main menu allowing selection of what you might want to do
 def main():
     choice = int(input("""
 1. Create New Character
@@ -55,6 +58,7 @@ def main():
         print("Invalid Choice")
         main()
 
+#allows the creation of a character to the database
 def createNewCharacter():
     characterName = getString("What do you want the characters name to be")
     characterClass = getString("What do you want the characters class to be")
@@ -76,7 +80,7 @@ def veiwCharacters():
         print(line)
     main()
 
-
+#allows searching of a character based upon their attributes
 def searchCharacter():
     choice = int(input("""
 1. Search For Character by Name
@@ -113,6 +117,7 @@ def searchCharacter():
             print(character)
     main()
 
+#can update one of te characters attributes if characters id is specified
 def updateCharacter(CharacterId):
     choice = int(input("""
 1. Edit Name
@@ -165,7 +170,7 @@ def updateCharacter(CharacterId):
         print(f"Updated Characters Health with a id of {IdUsed}")
     main()
 
-
+#deletes a character from the database from the user providing the characters id
 def deleteCharacter(CharacterId):
     cur.execute("""
                 DELETE FROM characters
