@@ -131,9 +131,8 @@ def deleteCharacter(CharacterId):
     cur.execute("""
                 DELETE FROM characters
                 WHERE id = ?
-                """, (CharacterId))
+                """, [CharacterId])
     db.commit()
-    new_id = cur.lastrowid
     print(f"Deleted Character with a id of {CharacterId}")
     main()
 
