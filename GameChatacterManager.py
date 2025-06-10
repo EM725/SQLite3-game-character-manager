@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS characters (
     name TEXT NOT NULL,
     class TEXT NOT NULL,
     level INTEGER DEFAULT '0',
-    health INTEGER DEFUALT '100'
+    health INTEGER DEFAULT '100'
 );
 """)
 
@@ -20,15 +20,21 @@ db.commit()
 def getString(message):
     string = None
     while string == None or string == '':
-        string = str(input(f"{message}\n"))
+        string = input(f"{message}\n")
     return string
 
 
 def getInteger(message):
     number = None
     while number == None:
-        number = int(input(f"{message}\n"))
-    return number
+        number = input(f"{message}\n")
+        try:
+            number = int(number)
+            if isinstance(number, int):
+                return number
+        except ValueError:
+            number = None
+        
 
 #the main menu allowing selection of what you might want to do
 def main():
@@ -72,7 +78,7 @@ def createNewCharacter():
     print(f"Created New Character with a id of {new_id}")
     main()
 
-
+#allows the viewing of all characters
 def veiwCharacters():
     cur.execute('SELECT * FROM characters')
     data = cur.fetchall()
@@ -83,33 +89,41 @@ def veiwCharacters():
 #allows searching of a character based upon their attributes
 def searchCharacter():
     choice = int(input("""
-1. Search For Character by Name
-2. Search For Character by Class
-3. Search For Character by Level
-4. Search For Character by Health
+1. Search For Character by ID
+2. Search For Character by Name
+3. Search For Character by Class
+4. Search For Character by Level
+5. Search For Character by Health
 """))
     if choice == 1:
+        characterID = getInteger("What is the id of the characters you want to search for")
+        cur.execute("SELECT * FROM characters WHERE id = ? ", [characterID])
+        characters = cur.fetchall()
+        for character in characters:
+            print(character)
+
+    elif choice == 2:
         characterName = getString("What is the name of the characters you want to search for")
         cur.execute("SELECT * FROM characters WHERE name = ? ", [characterName])
         characters = cur.fetchall()
         for character in characters:
             print(character)
 
-    elif choice == 2:
+    elif choice == 3:
         characterClass = getString("What is the class of the characters you want to search for")
         cur.execute("SELECT * FROM characters WHERE class = ? ", [characterClass])
         characters = cur.fetchall()
         for character in characters:
             print(character)
 
-    elif choice == 3:
+    elif choice == 4:
         characterLevel = getString("What is the level of the characters you want to search for")
         cur.execute("SELECT * FROM characters WHERE class = ? ", [characterLevel])
         characters = cur.fetchall()
         for character in characters:
             print(character)
 
-    elif choice == 4:
+    elif choice == 5:
         characterHealth = getString("What is the health of the characters you want to search for")
         cur.execute("SELECT * FROM characters WHERE health = ? ", [characterHealth])
         characters = cur.fetchall()
