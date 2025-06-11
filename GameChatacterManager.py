@@ -183,6 +183,23 @@ def updateCharacter(CharacterId):
         db.commit()
         IdUsed = cur.lastrowid
         print(f"Updated Characters Health with a id of {IdUsed}")
+        if newHealth >= 50:
+            pass
+        elif newHealth >= 25:
+            cur.execute("""
+                UPDATE characters
+                SET status = 'Injured'
+                WHERE id = ?
+                """, [CharacterID])
+        elif newHealth >= 0:
+            cur.execute("""
+                UPDATE characters
+                SET status = 'Injured'
+                WHERE id = ?
+                """, [CharacterID])
+        db.commit()
+        IdUsed = cur.lastrowid
+        print(f"Updated Characters Status with a id of {IdUsed}")
     main()
 
 #deletes a character from the database from the user providing the characters id
