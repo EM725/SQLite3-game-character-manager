@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS characters (
     name TEXT NOT NULL,
     class TEXT NOT NULL,
     level INTEGER DEFAULT '0',
-    health INTEGER DEFAULT '100'
+    health INTEGER DEFAULT '100',
+    status TEXT NOT NULL DEFAULT 'Alive'
 );
 """)
 
